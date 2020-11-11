@@ -2,6 +2,7 @@ package com.yma16.requset;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 //        super.doPost(req, resp);
         req.setCharacterEncoding("UTF-8");//统一采用utf-8
         String username=req.getParameter("username");//get 用户名
@@ -32,6 +34,10 @@ public class RegisterServlet extends HttpServlet {
         //同时设置response
         //resp.setContentType("text/html;character=UTF-8");
         PrintWriter printWriter=resp.getWriter();
+
+        //创建cookies
+        Cookie cookie=new Cookie("value","yma16");
+        resp.addCookie(cookie);//添加cookies
         printWriter.println("注册成功！");
     }
 }
