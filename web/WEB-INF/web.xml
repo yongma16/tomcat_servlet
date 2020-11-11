@@ -3,12 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+
     <servlet>
         <servlet-name>MyServlet</servlet-name>
         <servlet-class>com.yma16.MyServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+<!--        启动优先级-->
     </servlet>
     <servlet-mapping>
         <servlet-name>MyServlet</servlet-name>
         <url-pattern>/yma16</url-pattern>
     </servlet-mapping>
+
+<!--    匹配的html文件-->
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+    </welcome-file-list>
 </web-app>

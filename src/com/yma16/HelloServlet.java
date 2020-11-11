@@ -12,8 +12,10 @@ import java.io.IOException;
 public class HelloServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        response.getWriter().print("response test chinese 成功！");//中文乱码
-        request.setCharacterEncoding("UTF-8");
+        String s="测试中文是否通过";
+//        request.setCharacterEncoding("UTF-8");
+        response.getWriter().print("response test chinese 失败"+s);//中文乱码决解问题
+
     }
     protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException
     {
