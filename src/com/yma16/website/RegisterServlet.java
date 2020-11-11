@@ -27,8 +27,10 @@ public class RegisterServlet extends HttpServlet {
         String userpassword=req.getParameter("password");//get 密码
         System.out.println("提交的数据"+username+"\t"+userpassword);
 
-        resp.setCharacterEncoding("UTF-8");//
-        resp.setHeader("Content-Type","text/html;character=UTF-8");//设置
+        resp.setCharacterEncoding("UTF-8");//设置服务端
+        resp.setHeader("Content-Type","text/html;character=UTF-8");//设置header
+        //同时设置response
+        //resp.setContentType("text/html;character=UTF-8");
         PrintWriter printWriter=resp.getWriter();
         printWriter.println("注册成功！");
     }
