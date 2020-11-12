@@ -21,6 +21,7 @@ public class Dbutils {
         Properties properties=new Properties();
         InputStream inputStream= DbUtils.class.getResourceAsStream("/mysqldatabase.properties");//mysql连接
         try{
+            System.out.println("database");
             properties.load(inputStream);
             ds=(DruidDataSource) DruidDataSourceFactory.createDataSource(properties);
         }catch (IOException e)
@@ -42,6 +43,7 @@ public class Dbutils {
             }
         }catch (SQLException e)
         {
+            System.out.println("error connected");
             e.printStackTrace();
         }
         return connection;

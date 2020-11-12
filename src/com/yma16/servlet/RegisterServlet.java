@@ -30,10 +30,10 @@ public class RegisterServlet extends HttpServlet {
         User user=userService.register(username,password);//注册
         PrintWriter printWriter=resp.getWriter();
         if(user!=null){
-            printWriter.println("注册成功！");
+            printWriter.println("did it");
         }
         else{
-            printWriter.println("注册失败");//未定义跳转
+            printWriter.println("failed");//未定义跳转
         }
 
     }
@@ -50,13 +50,13 @@ public class RegisterServlet extends HttpServlet {
         resp.setContentType("text/html;charaset=UTF-8");
         //调用登陆业务功能逻辑
         UserService userService=new UserServiceImpl();//调用接口功能
-        User user=userService.login(username,password);//调用sql查询
+        User user=userService.register(username,password);//调用sql查询
         PrintWriter printWriter=resp.getWriter();
         if(user!=null){
-            printWriter.println("注册成功！");
+            printWriter.println("did it");
         }
         else{
-            printWriter.println("注册失败");//未定义跳转
+            printWriter.println("faied!");//未定义跳转
         }
     }
 }

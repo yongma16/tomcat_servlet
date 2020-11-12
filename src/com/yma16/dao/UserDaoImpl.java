@@ -16,10 +16,15 @@ public class UserDaoImpl implements UserDao{//接口实现类
     public User insert(String username,String password) {
         System.out.println("sql插入数据");
         try{
-            User user=queryRunner.query(Dbutils.getConnection(),"insert into user (username,password)values(?,?)",new BeanHandler<User>(User.class),username,password);
+            String sql="select username,password from user where username=? and password=?;";
+//            String sql="insert into user values(?,?)";
+            queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username,password);//测试
+            System.out.println("loading 插入数据");
+            User user=queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username,password);
             return user;//user
         }catch (SQLException e)
         {
+            System.out.println("error");
             e.printStackTrace();
         }
         return null;
@@ -29,10 +34,12 @@ public class UserDaoImpl implements UserDao{//接口实现类
     public User select(String username) {
         System.out.println("sql根据username查询");
         try{
-            User user=queryRunner.query(Dbutils.getConnection(),"select * from user where username=?",new BeanHandler<User>(User.class),username);
+            String sql="select username,password from user where username=?;";
+            User user=queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username);
             return user;//user
         }catch (SQLException e)
         {
+            System.out.println("error");
             e.printStackTrace();
         }
         return null;
@@ -42,7 +49,7 @@ public class UserDaoImpl implements UserDao{//接口实现类
     public int delete(String username) {
         System.out.println("sql根据username删除");
         try{
-            User user=queryRunner.query(Dbutils.getConnection(),"delete from user where username=?",new BeanHandler<User>(User.class));
+            User user=queryRunner.query(Dbutils.getConnection(),"delete from user where username=?;",new BeanHandler<User>(User.class),username);
             return 1;//删除成功
         }catch (SQLException e)
         {

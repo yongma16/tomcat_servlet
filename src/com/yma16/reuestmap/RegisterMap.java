@@ -11,7 +11,7 @@ import java.io.IOException;
 public class RegisterMap extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("register.html").forward(req,resp);//
+        req.getRequestDispatcher("register.html").forward(req,resp);
 //        resp.sendRedirect("register.html");//重定向，url
     }
 

@@ -37,10 +37,9 @@ public class UserServiceImpl implements UserService{//实现service接口
             User user=userdao.select(name);//名字查询
             System.out.println(user);//查询的结果
             if(user!=null){
-                if(user.getUserpassword().equals(password))
+                if(user.getPassword().equals(password))
                 {
-
-                    result=user;//查询存在则给result
+                    result=user;//查询存在则给result(对比)
                 }
             }
             Dbutils.commit();
