@@ -1,47 +1,29 @@
 package com.yma16.entity;
 
 public class User {
-    private String username,userpassword,age,sex;//对应数据库user
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setUserpassword(String userpassword) {
-        this.userpassword = userpassword;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
+    private String username,password;//对应数据库user
 
     public String getUsername() {
         return username;
     }
 
-    public String getUserpassword() {
-        return userpassword;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getAge() {
-        return age;
+    public String getPassword() {
+        return password;
     }
 
-    public String getSex() {
-        return sex;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
-                ", userpassword='" + userpassword + '\'' +
-                ", age='" + age + '\'' +
-                ", sex='" + sex + '\'' +
+                "password='" + password + '\'' +
                 '}';
     }
 }

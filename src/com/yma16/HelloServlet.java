@@ -19,6 +19,7 @@ public class HelloServlet extends HttpServlet {
     }
     protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException
     {
-        doGet( request,response);
+//        doGet( request,response);
+        request.setCharacterEncoding("UTF-8");//统一采用utf-8
     }
 }
