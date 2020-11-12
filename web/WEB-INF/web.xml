@@ -10,13 +10,15 @@
         <load-on-startup>0</load-on-startup>
 <!--        启动优先级-->
     </servlet>
+
     <servlet-mapping>
         <servlet-name>MyServlet</servlet-name>
         <url-pattern>/yma16</url-pattern>
     </servlet-mapping>
 
-<!--    匹配的html文件-->
+<!--    匹配首页的html文件-->
     <welcome-file-list>
-        <welcome-file>login.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+
 </web-app>

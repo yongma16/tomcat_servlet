@@ -6,7 +6,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("session")
+@WebServlet("/session")
 public class SessionDemo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -19,7 +19,7 @@ public class SessionDemo extends HttpServlet {
         HttpSession session=req.getSession();//获取
         session.setAttribute("key","value");
 
-        req.getRequestDispatcher("session.html").forward(req,resp);//转发重定向
+        req.getRequestDispatcher("sessions.html").forward(req,resp);//转发重定向
     }
 
     @Override
@@ -33,6 +33,6 @@ public class SessionDemo extends HttpServlet {
 
         HttpSession session=req.getSession();//获取
         session.setAttribute("key","value");
-        req.getRequestDispatcher("session.html").forward(req,resp);//转发重定向
+        req.getRequestDispatcher("sessions.html").forward(req,resp);//转发重定向
     }
 }

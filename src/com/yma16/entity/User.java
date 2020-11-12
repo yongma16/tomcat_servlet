@@ -1,7 +1,7 @@
 package com.yma16.entity;
 
 public class User {
-    private String username,userpassword,age,sex;//对应数据库user
+    private String username,userpassword;//对应数据库user
 
     public void setUsername(String username) {
         this.username = username;
@@ -9,14 +9,6 @@ public class User {
 
     public void setUserpassword(String userpassword) {
         this.userpassword = userpassword;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
     }
 
     public String getUsername() {
@@ -27,21 +19,11 @@ public class User {
         return userpassword;
     }
 
-    public String getAge() {
-        return age;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
                 ", userpassword='" + userpassword + '\'' +
-                ", age='" + age + '\'' +
-                ", sex='" + sex + '\'' +
                 '}';
     }
 }
