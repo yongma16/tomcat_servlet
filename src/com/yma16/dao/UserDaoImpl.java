@@ -14,9 +14,9 @@ public class UserDaoImpl implements UserDao{//接口实现类
 
     @Override
     public User insert(String username,String password) {
-        System.out.println("sql查询");
+        System.out.println("sql插入数据");
         try{
-            User user=queryRunner.query(Dbutils.getConnection(),"insert into user values(?,?)",new BeanHandler<User>(User.class));
+            User user=queryRunner.query(Dbutils.getConnection(),"insert into user (username,password)values(?,?)",new BeanHandler<User>(User.class));
             return user;//user
         }catch (SQLException e)
         {
@@ -27,7 +27,7 @@ public class UserDaoImpl implements UserDao{//接口实现类
 
     @Override
     public User select(String username) {
-        System.out.println("sql查询");
+        System.out.println("sql根据username查询");
         try{
             User user=queryRunner.query(Dbutils.getConnection(),"select * from user where username=?",new BeanHandler<User>(User.class));
             return user;//user
@@ -40,11 +40,21 @@ public class UserDaoImpl implements UserDao{//接口实现类
 
     @Override
     public int delete(String username) {
+        System.out.println("sql根据username删除");
+        try{
+            User user=queryRunner.query(Dbutils.getConnection(),"delete from user where username=?",new BeanHandler<User>(User.class));
+            return 1;//删除成功
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
         return 0;
     }
 
     @Override
     public int update(User user) {
+//      更新数据
+
         return 0;
     }
 
