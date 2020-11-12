@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="Zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>登录成功！</title>
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="wrapper">
+    <!--		get可以收参数   post的乱码问题仍然存在-->
+    <form class="form-signin" action="/tomcat_servlet_war_exploded/register" method="post">
+        <h2 class="form-signin-heading text-center" style="color: #FF7F00">登陆成功！</h2>
 
+    </form>
+</div>
 </body>
 </html>
