@@ -1,4 +1,73 @@
-# tomcat_servlet
+@[TOC](servlet结合jdbc)
+### 效果展示
+ **登录**
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20201112223530947.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4ODcwMTQ1,size_16,color_FFFFFF,t_70#pic_center)
+**注册**
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20201112223800688.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4ODcwMTQ1,size_16,color_FFFFFF,t_70#pic_center)
+
+
+### Servlet接口
+接口包括五个方法
+ - `void init`(ServletConfig config)
+ - `ServletConfig getServletConfig`()
+ - `void service`(ServletRequest request, ServletResponse response)
+ - `String getServletInfo`()
+ - `void destroy`()
+#### GenericServlet抽象类
+实现Servlet、ServletConfig、Serializable接口，需重写service方法。
+#### HttpServlet类
+继承GenericServlet基础上的扩展，子类必须重写一个方法。
+一般只需重写doGet和doPost方法。
+ - doGet
+ - doPost
+ - doPut
+ - doDelete
+ ### Servlet创建方式
+ #### 实现Servlet接口
+ 直接继承原生的Servlet，较为麻烦
+
+```java
+package com.yma16;
+import javax.servlet.*;
+import java.io.IOException;
+public class MyServlet implements Servlet {
+    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+    }
+    @Override
+    public ServletConfig getServletConfig() {
+        return null;
+    }
+    @Override
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+        System.out.println("测试1");
+    }
+    @Override
+    public String getServletInfo() {
+        return null;
+    }
+    @Override
+    public void destroy() {
+    }
+}
+```
+
+ #### 继承HttpServlet
+ 大部分开发人员推荐的创建方式，一般重写
+ 
+```java
+@WebServlet("/hello")//value urlpattern
+public class HelloServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        response.getWriter().print("测试！");
+    }
+    protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException
+    {
+        doGet( request,response);
+    }
+}
+```
 ### `实现登录注册`
 #### 功能逻辑
 传统的分为三层
@@ -122,38 +191,41 @@ public class Dbutils {
 
 ```
 #### Entity
-实体
+实体对应数据库表user
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20201112214631364.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4ODcwMTQ1,size_16,color_FFFFFF,t_70#pic_center)
+
 
 ```java
 package com.yma16.entity;
 
 public class User {
-    private String username,userpassword;//对应数据库user
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setUserpassword(String userpassword) {
-        this.userpassword = userpassword;
-    }
+    private String username,password;//对应数据库user
 
     public String getUsername() {
         return username;
     }
 
-    public String getUserpassword() {
-        return userpassword;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
-                ", userpassword='" + userpassword + '\'' +
+                "password='" + password + '\'' +
                 '}';
     }
 }
+
 
 ```
 
@@ -162,7 +234,9 @@ public class User {
 
 ```java
 package com.yma16.dao;
+
 import com.yma16.entity.User;
+
 import java.util.List;
 
 public interface UserDao {//功能接口
@@ -173,6 +247,7 @@ public interface UserDao {//功能接口
     public List<User> selectAll();//查找
 
 }
+
 ```
 接口实现类
 
@@ -193,10 +268,10 @@ public class UserDaoImpl implements UserDao{//接口实现类
 
     @Override
     public User insert(String username,String password) {
-        System.out.println("sql插入数据");
         try{
-            User user=queryRunner.query(Dbutils.getConnection(),"insert into user (username,password)values(?,?)",new BeanHandler<User>(User.class));
-            return user;//user
+            String sql="insert into user values(?,?)";
+            User user=queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username,password);
+            return user;
         }catch (SQLException e)
         {
             e.printStackTrace();
@@ -206,10 +281,10 @@ public class UserDaoImpl implements UserDao{//接口实现类
 
     @Override
     public User select(String username) {
-        System.out.println("sql根据username查询");
         try{
-            User user=queryRunner.query(Dbutils.getConnection(),"select * from user where username=?",new BeanHandler<User>(User.class));
-            return user;//user
+            String sql="select * from where username=?";
+            User user=queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username);
+            return user;
         }catch (SQLException e)
         {
             e.printStackTrace();
@@ -219,21 +294,11 @@ public class UserDaoImpl implements UserDao{//接口实现类
 
     @Override
     public int delete(String username) {
-        System.out.println("sql根据username删除");
-        try{
-            User user=queryRunner.query(Dbutils.getConnection(),"delete from user where username=?",new BeanHandler<User>(User.class));
-            return 1;//删除成功
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
         return 0;
     }
 
     @Override
     public int update(User user) {
-//      更新数据
-
         return 0;
     }
 
@@ -284,37 +349,37 @@ public class UserServiceImpl implements UserService{//实现service接口
     private UserDao userdao=new UserDaoImpl();//user接口功能
 
     @Override
-    public User register(String name, String password) {
+    public User register(String username, String password) {
         User result=null;
-        System.out.println("loading register");
         try{
             Dbutils.begin();
-            User user=userdao.insert(name,password);//insert添加数据
-            System.out.println(user);//数据添加结果
+            User user=userdao.insert(username,password);//插入用户名和密码
             if(user!=null){
-                result=user;//数据添加成功则传递
+                if(user.getPassword().equals(password))
+                {
+                    result=user;//查询存在则给result
+                }
             }
             Dbutils.commit();
         }catch (Exception e)
         {
             e.printStackTrace();
         }
-        return result;//返回
+        return result;
     }
 
     @Override
-    public User login(String name, String password) {
+    public User login(String username, String password) {
         User result=null;
         System.out.println("loading login");
         try{
             Dbutils.begin();
-            User user=userdao.select(name);//名字查询
+            User user=userdao.select(username);//名字查询
             System.out.println(user);//查询的结果
             if(user!=null){
-                if(user.getUserpassword().equals(password))
+                if(user.getPassword().equals(password))
                 {
-
-                    result=user;//查询存在则给result
+                    result=user;//查询存在则给result(对比)
                 }
             }
             Dbutils.commit();
@@ -341,8 +406,9 @@ public class UserServiceImpl implements UserService{//实现service接口
     }
 }
 
+
 ```
-#### servlet层
+#### servlet调用service
 登陆调用service的login
 
 ```java
@@ -354,4 +420,7 @@ User user=userService.login(username,password);//调用sql查询
 ```java
 User user=userService.register(username,password);//注册
 ```
+**end**
+代码：[我的仓库](https://github.com/yongma16?tab=repositories)
 
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20201112103818384.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4ODcwMTQ1,size_16,color_FFFFFF,t_70#pic_center)
