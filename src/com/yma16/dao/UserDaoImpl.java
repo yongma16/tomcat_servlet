@@ -13,15 +13,24 @@ public class UserDaoImpl implements UserDao{//接口实现类
     private QueryRunner queryRunner=new QueryRunner();
 
     @Override
-    public int insert(User user) {
-        return 0;
+    public User insert(String username,String password) {
+        System.out.println("sql查询");
+        try{
+            User user=queryRunner.query(Dbutils.getConnection(),"insert into user values(?,?)",new BeanHandler<User>(User.class));
+            return user;//user
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public User select(String username) {
+        System.out.println("sql查询");
         try{
-            User user=queryRunner.query(Dbutils.getConnection(),"select * from where username=?",new BeanHandler<User>(User.class));
-            return user;
+            User user=queryRunner.query(Dbutils.getConnection(),"select * from user where username=?",new BeanHandler<User>(User.class));
+            return user;//user
         }catch (SQLException e)
         {
             e.printStackTrace();
