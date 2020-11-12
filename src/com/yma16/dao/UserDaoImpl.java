@@ -16,8 +16,8 @@ public class UserDaoImpl implements UserDao{//接口实现类
     public User insert(String username,String password) {
         System.out.println("sql插入数据");
         try{
-            String sql="select username,password from user where username=? and password=?;";
-//            String sql="insert into user values(?,?)";
+//            String sql="select username,password from user where username=? and password=?;";
+            String sql="insert into user values(?,?)";
             queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username,password);//测试
             System.out.println("loading 插入数据");
             User user=queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username,password);
@@ -34,7 +34,7 @@ public class UserDaoImpl implements UserDao{//接口实现类
     public User select(String username) {
         System.out.println("sql根据username查询");
         try{
-            String sql="select username,password from user where username=?;";
+            String sql="select username,password from user where username=?";
             User user=queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username);
             return user;//user
         }catch (SQLException e)

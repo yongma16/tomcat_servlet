@@ -53,7 +53,8 @@ public class LoginServlet extends HttpServlet {
         User user=userService.login(username,password);//调用sql查询
         PrintWriter printWriter=resp.getWriter();
         if(user!=null){
-            printWriter.println("通过jdbc登陆成功！");
+//            printWriter.println("通过jdbc登陆成功！");
+            resp.sendRedirect("login_right.html");//登陆成功重定向
         }
         else{
             printWriter.println("通过jdbc登陆失败");//未定义跳转
