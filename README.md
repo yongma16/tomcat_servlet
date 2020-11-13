@@ -1,9 +1,19 @@
-## servlet结合jdbc
+# servlet结合jdbc实现登录登录注册
 ### 效果展示
  **登录**
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201112223530947.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4ODcwMTQ1,size_16,color_FFFFFF,t_70#pic_center)
 **注册**
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201112223800688.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4ODcwMTQ1,size_16,color_FFFFFF,t_70#pic_center)
+**登陆成功**
+查询登陆成功
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20201113101702941.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4ODcwMTQ1,size_16,color_FFFFFF,t_70#pic_center)
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20201113101624210.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4ODcwMTQ1,size_16,color_FFFFFF,t_70#pic_center)
+**注册成功**
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20201113103832932.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4ODcwMTQ1,size_16,color_FFFFFF,t_70#pic_center)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20201113104007764.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4ODcwMTQ1,size_16,color_FFFFFF,t_70#pic_center)
+
+
 
 
 ### Servlet接口
@@ -53,7 +63,7 @@ public class MyServlet implements Servlet {
 ```
 
  #### 继承HttpServlet
- 大部分开发人员推荐的创建方式，一般重写
+ 大部分开发人员推荐的创建方式，重写doGet和doPost方法
  
 ```java
 @WebServlet("/hello")//value urlpattern
@@ -81,6 +91,18 @@ public class HelloServlet extends HttpServlet {
 cookie传递参数给前端界面
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201112104752938.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4ODcwMTQ1,size_16,color_FFFFFF,t_70#pic_center)
+#### QreryRunner类的方法实现增删改查
+
+> **`query`(connection conn,String sql,Object[] params,ResultSetHandler rsh)** 
+> 执行查询
+> <br><br>
+> **`update`(connection conn,String sql,Object[] params,ResultSetHandler rsh)** 
+> 执行插入、更新、删除
+>  <br>
+>  **`BeanHandler`**
+>  将结果的第一行数据封装到对应的JavaBean实例中
+
+
 #### 配置mysql连接
 
 ```java
@@ -268,12 +290,18 @@ public class UserDaoImpl implements UserDao{//接口实现类
 
     @Override
     public User insert(String username,String password) {
+        System.out.println("sql插入数据");
         try{
-            String sql="insert into user values(?,?)";
-            User user=queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username,password);
-            return user;
+//            String sql="select username,password from user where username=? and password=?;";
+            String insertsql="insert into user values(?,?)";
+            String selectsql="select username,password from user where username=? and password=?";
+            queryRunner.update(Dbutils.getConnection(),insertsql,username,password);//插入语句实现
+            System.out.println("loading 插入数据");
+            User user=queryRunner.query(Dbutils.getConnection(),selectsql,new BeanHandler<User>(User.class),username,password);//查询是否存在
+            return user;//user
         }catch (SQLException e)
         {
+            System.out.println("error");
             e.printStackTrace();
         }
         return null;
@@ -281,12 +309,14 @@ public class UserDaoImpl implements UserDao{//接口实现类
 
     @Override
     public User select(String username) {
+        System.out.println("sql根据username查询");
         try{
-            String sql="select * from where username=?";
+            String sql="select username,password from user where username=?";
             User user=queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username);
-            return user;
+            return user;//user
         }catch (SQLException e)
         {
+            System.out.println("error");
             e.printStackTrace();
         }
         return null;
@@ -294,11 +324,21 @@ public class UserDaoImpl implements UserDao{//接口实现类
 
     @Override
     public int delete(String username) {
+        System.out.println("sql根据username删除");
+        try{
+            User user=queryRunner.query(Dbutils.getConnection(),"delete from user where username=?;",new BeanHandler<User>(User.class),username);
+            return 1;//删除成功
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
         return 0;
     }
 
     @Override
     public int update(User user) {
+//      更新数据
+
         return 0;
     }
 
@@ -314,6 +354,7 @@ public class UserDaoImpl implements UserDao{//接口实现类
         return null;
     }
 }
+
 
 ```
 #### Service
