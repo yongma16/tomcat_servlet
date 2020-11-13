@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/toregister")
+@WebServlet("/doregister")
 public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,10 +30,11 @@ public class RegisterServlet extends HttpServlet {
         User user=userService.register(username,password);//注册
         PrintWriter printWriter=resp.getWriter();
         if(user!=null){
-            printWriter.println("did it");
+//            printWriter.println("通过jdbc登陆成功！");
+            resp.sendRedirect("register_right.html");//登陆成功重定向
         }
         else{
-            printWriter.println("failed");//未定义跳转
+            printWriter.println("通过jdbc登陆失败");//未定义跳转
         }
 
     }
@@ -53,10 +54,11 @@ public class RegisterServlet extends HttpServlet {
         User user=userService.register(username,password);//调用sql查询
         PrintWriter printWriter=resp.getWriter();
         if(user!=null){
-            printWriter.println("did it");
+//            printWriter.println("通过jdbc登陆成功！");
+            resp.sendRedirect("register_right.html");//登陆成功重定向
         }
         else{
-            printWriter.println("faied!");//未定义跳转
+            printWriter.println("通过jdbc登陆失败");//未定义跳转
         }
     }
 }

@@ -17,10 +17,11 @@ public class UserDaoImpl implements UserDao{//接口实现类
         System.out.println("sql插入数据");
         try{
 //            String sql="select username,password from user where username=? and password=?;";
-            String sql="insert into user values(?,?)";
-            queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username,password);//测试
+            String insertsql="insert into user values(?,?)";
+            String selectsql="select username,password from user where username=? and password=?";
+            queryRunner.update(Dbutils.getConnection(),insertsql,username,password);//插入语句实现
             System.out.println("loading 插入数据");
-            User user=queryRunner.query(Dbutils.getConnection(),sql,new BeanHandler<User>(User.class),username,password);
+            User user=queryRunner.query(Dbutils.getConnection(),selectsql,new BeanHandler<User>(User.class),username,password);//查询是否存在
             return user;//user
         }catch (SQLException e)
         {
