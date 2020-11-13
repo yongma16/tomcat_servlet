@@ -19,7 +19,7 @@ public class Dbutils {
 
     static{
         Properties properties=new Properties();
-        InputStream inputStream= DbUtils.class.getResourceAsStream("/mysqldatabase.properties");//mysql连接
+        InputStream inputStream= DbUtils.class.getResourceAsStream("database.properties");//mysql连接
         try{
             System.out.println("database");
             properties.load(inputStream);
